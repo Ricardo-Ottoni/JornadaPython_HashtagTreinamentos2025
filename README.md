@@ -1,0 +1,1 @@
+# JornadaPython_HashtagTreinamentos2025
