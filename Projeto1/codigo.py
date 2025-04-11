@@ -5,11 +5,12 @@ import pandas           #realizar manipulação de dados
 # Passo 1: Entrar no sistema da empresa
 pyautogui.PAUSE = 0.5
 
-# abrir o firefox mozilla
+# abriBOHA000251    r o firefox mozilla
 pyautogui.press("win")          #"press": apertar 1 tecla
 pyautogui.write("firefox")      #"write": escrever 1 texto
 pyautogui.press("enter")
 time.sleep(3)
+
 
 # digitar o site
 pyautogui.click(x=1665, y=77)       #"click": clicar em algum lugar
@@ -36,39 +37,42 @@ tabela = pandas.read_csv("Projeto1/produtos.csv")
 
 print(tabela)
 
- # Passo 4: Cadastrar 1º produto manualmente, depois automatiza o restante do processo
-pyautogui.click(x=1964, y=372)
+# Passo 4: Cadastrar 1º produto manualmente, depois automatiza o restante do processo
 
-codigo = "MOLO000251"
-pyautogui.write(codigo)
+# Passo 5: Repetir para todos os produtos - passo 4 dentro de um for
+for linha in tabela.index:                         #p/ cada linha da tabela
+    pyautogui.click(x=1964, y=372)
 
-pyautogui.press("tab")      #passar p/ o próximo campo
-marca = "Logitech"
-pyautogui.write(marca)
+    codigo = tabela.loc[linha, "codigo"]           #loc = localizar uma informação na linha e coluna
+    pyautogui.write(codigo)
 
-pyautogui.press("tab")
-tipo = "Mouse"
-pyautogui.write(tipo)
+    pyautogui.press("tab")      
+    marca = tabela.loc[linha, "marca"]
+    pyautogui.write(marca)
 
-pyautogui.press("tab")
-categoria = "1"
-pyautogui.write(categoria)
+    pyautogui.press("tab")
+    tipo = tabela.loc[linha, "tipo"]
+    pyautogui.write(tipo)
 
-pyautogui.press("tab")
-preco_unitario = "25.95"
-pyautogui.write(preco_unitario)
+    pyautogui.press("tab")
+    categoria = str(tabela.loc[linha, "categoria"])         #converter nº p/ string
+    pyautogui.write(categoria)
 
-pyautogui.press("tab")
-custo = "6.50"
-pyautogui.write(custo)
+    pyautogui.press("tab")
+    preco_unitario = str(tabela.loc[linha, "preco_unitario"])
+    pyautogui.write(preco_unitario)
 
-pyautogui.press("tab")
-obs = ""
-pyautogui.write("")
+    pyautogui.press("tab")
+    custo = str(tabela.loc[linha, "custo"])
+    pyautogui.write(custo)
 
-pyautogui.press("tag")      #passar p/ o botão logar
-pyautogui.press("enter")    #enviar formulário
+    pyautogui.press("tab")
+    obs = str(tabela.loc[linha, "obs"])
 
-pyautogui.scroll(10000)     #nº positivo a rolagem vai para cima e negativo vai para baixo
-                            #no lugar de nº, poderia usar teclas: home p/ cima e end p/ baixo
+    if obs != "nan":            #nan -> Not a Number
+        pyautogui.write(obs)
 
+    pyautogui.press("tag")      
+    pyautogui.press("enter")    
+
+    pyautogui.scroll(10000)     
