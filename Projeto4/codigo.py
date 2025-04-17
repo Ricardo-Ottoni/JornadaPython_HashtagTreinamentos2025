@@ -37,12 +37,18 @@ import flet as ft
 def main(pagina):              
         #criar os elementos
         titulo = ft.Text("Hashzap")
-
         titulo_janela = ft.Text("Bem vindo ao Hashzap")
-        campo_nome = ft.TextField(label="Digite o seu nome")
 
-        campo_mensagem = ft.TextField()
-        botao_enviar = ft.ElevatedButton("Enviar")
+        def enviar_mensagem(evento):
+            texto_mensagem = ft.Text(campo_mensagem.value)
+            chat.controls.append(texto_mensagem)
+            campo_mensagem.value = ""       # limpar campo
+            pagina.update()
+
+        campo_mensagem = ft.TextField(label="Escreva sua mensagem", on_submit=enviar_mensagem)  #submit -> enviar com enter
+        botao_enviar = ft.ElevatedButton("Enviar", on_click=enviar_mensagem)
+        chat = ft.Column()
+        linha_mensagem = ft.Row([campo_mensagem, botao_enviar])
 
         def entrar_chat(evento):
             print("Entrou no chat")
@@ -53,13 +59,13 @@ def main(pagina):
             # tirar o botão iniciar
             pagina.remove(botao_iniciar)
             # criar o chat
-            
+            pagina.add(chat)
             # criar o campo digite sua mensagem
-            pagina.add(campo_mensagem)
             # botão enviar
-            pagina.add(botao_enviar)
+            pagina.add(linha_mensagem)
             pagina.update()
 
+        campo_nome = ft.TextField(label="Digite o seu nome", on_submit=entrar_chat)
         botao_entrar = ft.ElevatedButton("Entrar no chat", on_click=entrar_chat)
 
         janela = ft.AlertDialog(
