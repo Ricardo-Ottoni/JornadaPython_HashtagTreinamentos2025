@@ -39,12 +39,33 @@ def main(pagina):
         titulo = ft.Text("Hashzap")
 
         titulo_janela = ft.Text("Bem vindo ao Hashzap")
-        campo_nome = ft.TextField()
-        botao_entrar = ft.ElevatedButton("Entrar no chat")
+        campo_nome = ft.TextField(label="Digite o seu nome")
+
+        campo_mensagem = ft.TextField()
+        botao_enviar = ft.ElevatedButton("Enviar")
+
+        def entrar_chat(evento):
+            print("Entrou no chat")
+            # fechar a janela / dialog
+            janela.open = False
+            # tirar o título
+            pagina.remove(titulo)
+            # tirar o botão iniciar
+            pagina.remove(botao_iniciar)
+            # criar o chat
+            
+            # criar o campo digite sua mensagem
+            pagina.add(campo_mensagem)
+            # botão enviar
+            pagina.add(botao_enviar)
+            pagina.update()
+
+        botao_entrar = ft.ElevatedButton("Entrar no chat", on_click=entrar_chat)
+
         janela = ft.AlertDialog(
             title=titulo_janela,
             content=campo_nome,
-            actions=[botao_entrar] 
+            actions=[botao_entrar]
         )
 
         def abrir_dialog(evento):               # precisa receber um parâmetro
@@ -60,9 +81,11 @@ def main(pagina):
 
 # Passo 3: rodar o aplicativo
 ft.app(main, view=ft.WEB_BROWSER)           # ctrl+c no terminal -> parar de rodar
+#ft.app(main)         
 
 
 
 # Obs.:
 # sempre que clicamos em qualquer botão -> flet cria um evento (evento do click)
+# sempre que atribuímos uma função ao botão, por padrão esta função tem que receber por parâmetro o evento do click do botão (evento)
 # no Flet, permite que as edições no código apareçam sem recarregar a página -> "pagina.update()"
