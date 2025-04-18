@@ -39,9 +39,18 @@ def main(pagina):
         titulo = ft.Text("Hashzap")
         titulo_janela = ft.Text("Bem vindo ao Hashzap")
 
-        def enviar_mensagem(evento):
-            texto_mensagem = ft.Text(campo_mensagem.value)
+        def enviar_mensagem_tunel(mensagem):
+            texto_mensagem = ft.Text(mensagem) 
             chat.controls.append(texto_mensagem)
+            pagina.update()
+
+        # websocket -> túnel de comunicação*
+        pagina.pubsub.subscribe(enviar_mensagem_tunel)   # criando túnel e passando por parâmetro a função que será executada p/ todo mundo.
+
+        def enviar_mensagem(evento):
+            mensagem = f"{campo_nome.value}: {campo_mensagem.value}" # valor dinâmico -> usar f-strings e colchetes
+            # enviar a mensagem no tunel
+            pagina.pubsub.send_all(mensagem)    # enviando mensagem (passada por parâmetro) para todo mundo
             campo_mensagem.value = ""       # limpar campo
             pagina.update()
 
@@ -95,3 +104,4 @@ ft.app(main, view=ft.WEB_BROWSER)           # ctrl+c no terminal -> parar de rod
 # sempre que clicamos em qualquer botão -> flet cria um evento (evento do click)
 # sempre que atribuímos uma função ao botão, por padrão esta função tem que receber por parâmetro o evento do click do botão (evento)
 # no Flet, permite que as edições no código apareçam sem recarregar a página -> "pagina.update()"
+# túnel de comunicação* -> permite um usuário se comunicar com outro pela internet
