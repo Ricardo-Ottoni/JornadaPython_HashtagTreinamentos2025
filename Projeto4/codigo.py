@@ -60,7 +60,7 @@ def main(pagina):
         linha_mensagem = ft.Row([campo_mensagem, botao_enviar])
 
         def entrar_chat(evento):
-            print("Entrou no chat")
+            pagina.pubsub.send_all(f"{campo_nome.value} entrou no chat")        # aviso de novo usuário no chat
             # fechar a janela / dialog
             janela.open = False
             # tirar o título
@@ -105,3 +105,4 @@ ft.app(main, view=ft.WEB_BROWSER)           # ctrl+c no terminal -> parar de rod
 # sempre que atribuímos uma função ao botão, por padrão esta função tem que receber por parâmetro o evento do click do botão (evento)
 # no Flet, permite que as edições no código apareçam sem recarregar a página -> "pagina.update()"
 # túnel de comunicação* -> permite um usuário se comunicar com outro pela internet
+# ver documentação p/ deploy no site https://flet.dev/docs/publish
